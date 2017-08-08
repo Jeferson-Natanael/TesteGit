@@ -1,0 +1,16 @@
+{
+  "name": "psvlims.website",
+  "private": "true",
+  "devDependencies": {},
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-material": "^1.1.4",
+    "angular-route": "^1.6.4",
+    "svg-assets-cache": "svg-assets-cache#*",
+    "angular-ui-grid": "^4.0.4",
+    "angular-touch": "^1.6.4",
+    "bootstrap": "^3.3.7",
+    "angular-responsive-tables": "^0.4.4",
+    "ngtable-bower": "^3.0.1"
+  }
+}

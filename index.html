@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>PSV LIMS</title>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/ico" href="img/laboratory.ico" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+    
+    <link rel="stylesheet" href="lib/angular-material/angular-material.min.css" type="text/css">
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="lib/angular-responsive-tables/release/angular-responsive-tables.css">
+    <link rel="stylesheet" href="lib/ngtable-bower/ng-table.min.css">
+
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-animate/angular-animate.min.js"></script>
+    <script src="lib/angular-aria/angular-aria.min.js"></script>
+    <script src="lib/angular-material/angular-material.min.js"></script>
+    <script src="lib/angular-messages/angular-messages.min.js"></script>
+    <script src="lib/angular-route/angular-route.min.js"></script>
+    <script src="lib/svg-assets-cache/svg-assets-cache.js"></script>
+    <script src="lib/angular-touch/angular-touch.min.js"></script>
+    <script src="lib/ngtable-bower/ng-table.min.js"></script>
+    <script src="lib/angular-responsive-tables/release/angular-responsive-tables.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/controllers/gestaoAmostraCtrl.js"></script>
+    <script src="js/controllers/appCtrl.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body ng-controller="AppCtrl">
+    <div flex layout="column" layout-fill ng-cloak="" class="sidenavdemoBasicUsage">
+        <md-toolbar class="md-primary md-hue-2">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleSidenav('left')">
+                    <md-icon md-svg-icon="img/icons/menu.svg">  </md-icon>
+                </md-button>
+                <h1 flex md-truncate style="text-align:center"> {{title}} </h1>
+                <md-button class="md-icon-button" aria-label="More" ng-click="toggleSidenav('right')" ng-show="btnOption">
+                    <md-icon md-svg-icon="img/icons/more_vert.svg"> </md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-content flex-layout="column" flex=true>
+            <div layout="column" layout-fill="" ng-view>
+            </div>
+            <div flex=""></div>
+        </md-content>
+        <md-sidenav class="md-sidenav-left md-whiteframe-4dp" md-component-id="left">
+            <div flex layout="column" layout-fill ng-cloak="" class="sidenavdemoBasicUsage">
+                <md-toolbar class="md-primary">
+                    <div class="md-toolbar-tools">
+                        <md-button class="md-icon-button" ng-click="closeSidenav('left')" ng-href="index.html">
+                            <md-icon class="md-primary" md-svg-icon="img/icons/home.svg"></md-icon>
+                        </md-button>
+                        <h1 flex md-truncate style="text-align-last:center"> PSV LIMS </h1>
+                        <md-button class="md-icon-button" ng-click="closeSidenav('left')">
+                            <md-icon md-svg-icon="img/icons/chevron_left.svg"></md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <md-content flex-layout="column" flex=true>
+                    <md-list ng-cloak="">
+                        <md-list-item ng-click="closeSidenav('left')" ng-href="{{item.href}}" ng-repeat="item in lstItensMenu" aria-label="{{item.display}}">
+                            <md-icon md-svg-icon="{{item.icon}}"></md-icon>
+                            <p> {{ item.display }} </p>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </div>
+        </md-sidenav>
+        <md-sidenav class="md-sidenav-right md-whiteframe-6dp" md-component-id="right">
+            <div flex layout="column" layout-fill ng-cloak="" class="sidenavdemoBasicUsage">
+                <md-toolbar class="md-primary">
+                    <div class="md-toolbar-tools">
+                        <md-button class="md-icon-button" ng-click="closeSidenav('right')">
+                            <md-icon md-svg-icon="img/icons/chevron_right.svg"></md-icon>
+                        </md-button>
+                        <h1 flex md-truncate style="text-align-last:center"> Operações </h1>
+                    </div>
+                </md-toolbar>
+                <md-content flex-layout="column" flex=true>
+                    <md-list ng-cloak="">
+                        <div ng-repeat="itemOperacao in lstItensOperacoes">
+                            <md-list-item ng-init="itemOperacao.subMenu.length > 0 ? itemOperacao.activeIcon='img/icons/expand_more.svg' : ''"
+                                          ng-click="itemOperacao.subMenu.length > 0 ? showChilds(itemOperacao) : openDialog($event, itemOperacao)">
+                                <md-icon md-svg-icon="{{itemOperacao.icon}}"></md-icon>
+                                <p>{{itemOperacao.display}}</p>
+                                <md-icon md-svg-icon="{{itemOperacao.activeIcon}}"></md-icon>
+                            </md-list-item>
+                            <div ng-show="itemOperacao.active">
+                                <md-list-item ng-repeat="item in itemOperacao.subMenu" ng-click="openDialog($event, item)" style="width:80%; left:10%">
+                                    <md-icon md-svg-src="{{item.icon}}" aria-label="{{item.display}}"></md-icon>
+                                    <p>{{item.display}}</p>
+                                </md-list-item>
+                            </div>
+                        </div>
+                    </md-list>
+                </md-content>
+            </div>
+        </md-sidenav>
+    </div>
+</body>
+</html>

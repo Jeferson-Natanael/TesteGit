@@ -1,0 +1,16 @@
+{
+    "author": {
+        "name": "David Reed"
+    },
+    "name": "ngtable-bower",
+    "keywords": [
+        "angular",
+        "ng-table",
+        "ngtable"
+    ],
+    "license": "",
+    "ignore": [],
+    "description": "Bundled version of ng-table available via bower - ng-table source: esvit/ng-table",
+    "version": "3.0.1",
+    "main": ["./ng-table.js","./ng-table.css"]
+}

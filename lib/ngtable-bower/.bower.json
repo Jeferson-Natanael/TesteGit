@@ -1,0 +1,30 @@
+{
+  "author": {
+    "name": "David Reed"
+  },
+  "name": "ngtable-bower",
+  "keywords": [
+    "angular",
+    "ng-table",
+    "ngtable"
+  ],
+  "license": "",
+  "ignore": [],
+  "description": "Bundled version of ng-table available via bower - ng-table source: esvit/ng-table",
+  "version": "3.0.1",
+  "main": [
+    "./ng-table.js",
+    "./ng-table.css"
+  ],
+  "homepage": "https://github.com/ngtable-bower/ngtable-bower",
+  "_release": "3.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "3.0.1",
+    "commit": "20aea6bb0cb8ead1f25e0bbf8c48cef3deef201b"
+  },
+  "_source": "https://github.com/ngtable-bower/ngtable-bower.git",
+  "_target": "^3.0.1",
+  "_originalSource": "ngtable-bower",
+  "_direct": true
+}

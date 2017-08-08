@@ -1,0 +1,1024 @@
+﻿<style type="text/css">
+    .ui-grid-menu-button {
+        width: -1px;
+        border: hidden;
+    }
+
+    .selected {
+        background-color: #3B7CB5 !important;
+        color: white !important;
+        font-weight: bold !important;
+    }
+</style>
+<!-- Template Detalhe -->
+
+<script type="text/ng-template" id="gestaoAmostra">
+    <md-dialog aria-label="Amostra" flex="70">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Detalhe da Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs="">
+                                <label>Nº Amostra</label>
+                                <input ng-model="rowSelected.NumAmostra" disabled="disabled">
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs="">
+                                <label>Cod. Amostra</label>
+                                <input ng-model="rowSelected.CodigoAmostra" disabled="disabled">
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Des. Situacão</label>
+                                <input ng-model="rowSelected.DesSituacao" disabled="disabled">
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs="">
+                                <label>Cod. Sintaxe</label>
+                                <input ng-model="rowSelected.CodSintaxe" disabled="disabled">
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs="">
+                                <label>Cod. Template</label>
+                                <input ng-model="rowSelected.CodTemplate" disabled="disabled">
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Data Insercão</label>
+                                <md-datepicker ng-model="rowSelected.DthInsercao" disabled="disabled"></md-datepicker>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer('Salvar')">
+                Salvar
+            </md-button>
+            <md-button class="md-primary" ng-click="answer('Cancelar')">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Receber Amostra -->
+
+<script type="text/ng-template" id="receberAmostra">
+    <md-dialog aria-label="ReceberAmostra" flex="50">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Receber Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="receber.numAmostra" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Coleta</label>
+                                <md-datepicker ng-model="receber.dthColeta" required></md-datepicker>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Recebimento</label>
+                                <md-datepicker ng-model="receber.dthRecebimento" required></md-datepicker>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(receber)">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Inspecionar -->
+
+<script type="text/ng-template" id="inspecionar">
+    <md-dialog aria-label="Inspecionar" flex="70">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Inspecionar Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="Inspecao.NumAmostra" ng-change="validarInspecao(Inspecao.NumAmostra)" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Plano de Inspeção</label>
+                                <input ng-model="Inspecao.PlanoInspecao" disabled="disabled">
+                            </md-input-container>
+                            <md-input-container>
+                                <label>Versão Inspeção</label>
+                                <input ng-model="Inspecao.VersaoInspecao" disabled="disabled">
+                            </md-input-container>
+                        </div>
+                        <md-input-container class="md-block" flex-gt-xs ng-show="Inspecao.InspecaoRequerida != null">
+                            <label>Inspeção Requerida</label>
+                            <input ng-model="Inspecao.InspecaoRequerida" disabled="disabled">
+                        </md-input-container>
+                        <div layout-gt-xs="row" ng-show="Inspecao.InspecaoRequerida == null">
+                            <md-input-container class="md-block" flex-gt-xs>
+                              <label>Observação</label>
+                              <textarea ng-model="Inspecao.Observacao" md-maxlength="150" rows="5" md-select-on-focus ng-disabled="!InspValida"></textarea>
+                            </md-input-container>
+                            <md-radio-group ng-model="Inspecao.Aprovado" ng-disabled="!InspValida">
+                              <md-radio-button ng-value="true" class="md-primary">Aprovado</md-radio-button>
+                              <md-radio-button ng-value="false">Rejeitado</md-radio-button>
+                            </md-radio-group>
+                        </div>
+                        <div ng-repeat="item in Inspecao.lstInspecaoCampos" ng-show="Inspecao.InspecaoRequerida == null">
+                              <div ng-switch="item.TipoCampo">
+                                     <div ng-switch-when="N">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <input name="item.NomCampo" ng-model="item.ValCampo" type="number">
+                                       </md-input-container>
+                                     </div>
+                                     <div ng-switch-when="F">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <input name="item.NomCampo" ng-model="item.ValCampo" type="number" disabled="disabled">
+                                       </md-input-container>
+                                     </div>
+                                     <div ng-switch-when="T">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <input name="item.NomCampo" ng-model="item.ValCampo" type="text">
+                                       </md-input-container>
+                                     </div>
+                                     <div ng-switch-when="D">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <md-datepicker name="item.NomCampo" ng-model="item.ValCampo"></md-datepicker>
+                                       </md-input-container>
+                                     </div>
+                                     <div ng-switch-when="C">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <md-select name="item.NomCampo" ng-model="item.ValCampo" ng-change="">
+                                             <md-option ng-repeat="colecao in item.Colecao" value="{{colecao.Value}}">
+                                                 {{colecao.Display}}
+                                             </md-option>
+                                         </md-select>
+                                       </md-input-container>
+                                     </div>
+                                     <div ng-switch-when="O">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <md-select name="item.NomCampo" ng-model="item.ValCampo" ng-change="">
+                                             <md-option ng-repeat="colecao in item.Colecao" value="{{colecao.Value}}">
+                                                 {{colecao.Display}}
+                                             </md-option>
+                                         </md-select>
+                                       </md-input-container>
+                                     </div>
+                              </div>
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-disabled="!InspValida" ng-click="answer(Inspecao)">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Preparacão -->
+
+<script type="text/ng-template" id="preparacao">
+    <md-dialog aria-label="Preparacão" flex="70">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Preparacão Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="Preparacao.numAmostra" ng-change="arraySearch(Preparacao.numAmostra)" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-tabs md-dynamic-height md-border-bottom>
+                          <md-tab label="Dados Básicos">
+                            <md-content class="md-padding">
+                                <div layout-gt-xs="row">
+                                    <md-input-container class="md-block" flex-gt-xs>
+                                        <label>Data Inicial</label>
+                                        <md-datepicker ng-model="Preparacao.dataInicial"></md-datepicker>
+                                    </md-input-container>
+                                    <md-input-container class="md-block" flex-gt-xs>
+                                        <label>Data Final</label>
+                                        <md-datepicker ng-model="Preparacao.dataFinal"></md-datepicker>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-xs="row">
+                                    <md-input-container class="md-block" flex-gt-xs>
+                                      <label>Observação</label>
+                                      <textarea ng-model="Preparacao.observacao" md-maxlength="300" rows="5" md-select-on-focus></textarea>
+                                    </md-input-container>
+                                </div>
+                            </md-content>
+                          </md-tab>
+                          <md-tab label="Informações Adicionais">
+                            <md-content class="md-padding">
+                                <div ng-repeat="item in Preparacao.campos">
+                                      <div ng-switch="item.TipoCampo">
+                                             <div ng-switch-when="N">
+                                               <md-input-container class="md-block" flex-gt-xs>
+                                                 <label>{{item.NomCampo}}</label>
+                                                 <input name="item.NomCampo" ng-model="item.ValCampo" type="number" ng-change="IsChanged = true"  ng-blur="IsChanged ? formulaCampos(item) : '' " ng-keypress="$event.which == 13 ? formulaCampos(item) : '' ">
+                                               </md-input-container>
+                                             </div>
+                                             <div ng-switch-when="F">
+                                               <md-input-container class="md-block" flex-gt-xs>
+                                                 <label>{{item.NomCampo}}</label>
+                                                 <input name="item.NomCampo" ng-model="item.ValCampo" type="number" disabled="disabled">
+                                               </md-input-container>
+                                             </div>
+                                             <div ng-switch-when="T">
+                                               <md-input-container class="md-block" flex-gt-xs>
+                                                 <label>{{item.NomCampo}}</label>
+                                                 <input name="item.NomCampo" ng-model="item.ValCampo" type="text">
+                                               </md-input-container>
+                                             </div>
+                                             <div ng-switch-when="D">
+                                               <md-input-container class="md-block" flex-gt-xs>
+                                                 <label>{{item.NomCampo}}</label>
+                                                 <md-datepicker name="item.NomCampo" ng-model="item.ValCampo"></md-datepicker>
+                                               </md-input-container>
+                                             </div>
+                                             <div ng-switch-when="O">
+                                               <md-input-container class="md-block" flex-gt-xs>
+                                                 <label>{{item.NomCampo}}</label>
+                                                 <md-select name="item.NomCampo" ng-model="item.ValCampo" ng-change="">
+                                                     <md-option ng-repeat="operacao in item.Operacao" value="">
+                                                         {{operacao.CodOperacao}}
+                                                     </md-option>
+                                                 </md-select>
+                                               </md-input-container>
+                                             </div>
+                                             <div ng-switch-when="S">
+                                               <md-input-container class="md-block" flex-gt-xs>
+                                                 <label>{{item.NomCampo}}</label>
+                                                 <textarea name="item.NomCampo" ng-model="item.ValCampo" md-maxlength="300" rows="5" md-select-on-focus></textarea>
+                                               </md-input-container>
+                                             </div>
+                                             <div ng-switch-when="C">
+                                               <md-input-container class="md-block" flex-gt-xs>
+                                                 <label>{{item.NomCampo}}</label>
+                                                 <textarea name="item.NomCampo" ng-model="item.ValCampo" md-maxlength="300" rows="5" md-select-on-focus></textarea>
+                                               </md-input-container>
+                                             </div>
+                                      </div>
+                                </div>
+                            </md-content>
+                          </md-tab>
+                        </md-tabs>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(Preparacao)">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Prioridade -->
+
+<script type="text/ng-template" id="prioridade">
+    <md-dialog aria-label="Prioridade">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Prioridade</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="Prioridade.numAmostra" ng-change="arraySearch(Prioridade.numAmostra)" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Prioridade</label>
+                            <input type="number" ng-model="Prioridade.numPrioridade" required />
+                        </md-input-container>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(Prioridade)">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Mover Amostra -->
+
+<script type="text/ng-template" id="moverAmostra">
+    <md-dialog aria-label="MoverAmostra" flex="50">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Mover Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="Mover.numAmostra" ng-change="arraySearch(Mover.numAmostra)" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <div layout-gt-xs="column">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Localização Atual</label>
+                                <input ng-model="Mover.local" disabled="disabled">
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Nova Localização</label>
+                                <md-select ng-model="Mover.novoLocal" required>
+                                    <md-option ng-repeat="local in Locais" value="{{local.CodLocalizacao}}">
+                                        {{local.CodLocalizacao}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Data</label>
+                                <md-datepicker ng-model="Mover.data" required></md-datepicker>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(Mover)">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Revisão -->
+
+<script type="text/ng-template" id="revisar">
+    <md-dialog aria-label="Revisar" flex="70">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Revisar Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="Revisao.NumAmostra" ng-change="validarRevisao(Revisao.NumAmostra)" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Plano de Inspeção</label>
+                                <input ng-model="Revisao.PlanoInspecao" disabled="disabled">
+                            </md-input-container>
+                            <md-input-container>
+                                <label>Versão Inspeção</label>
+                                <input ng-model="Revisao.VersaoInspecao" disabled="disabled">
+                            </md-input-container>
+                        </div>
+                        <md-input-container class="md-block" flex-gt-xs ng-show="Revisao.InspecaoRequerida != null">
+                            <label>Inspeção Requerida</label>
+                            <input ng-model="Revisao.InspecaoRequerida" disabled="disabled">
+                        </md-input-container>
+                        <div layout-gt-xs="row" ng-show="Revisao.InspecaoRequerida == null">
+                            <md-input-container class="md-block" flex-gt-xs>
+                              <label>Observação</label>
+                              <textarea ng-model="Revisao.Observacao" md-maxlength="150" rows="5" md-select-on-focus ng-disabled="!ReviValida"></textarea>
+                            </md-input-container>
+                            <md-radio-group ng-model="Revisao.Aprovado" ng-disabled="!ReviValida">
+                              <md-radio-button ng-value="true" class="md-primary">Aprovado</md-radio-button>
+                              <md-radio-button ng-value="false">Rejeitado</md-radio-button>
+                            </md-radio-group>
+                        </div>
+                        <div ng-repeat="item in Revisao.lstInspecaoCampos" ng-show="Revisao.InspecaoRequerida == null">
+                              <div ng-switch="item.TipoCampo">
+                                     <div ng-switch-when="N">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <input name="item.NomCampo" ng-model="item.ValCampo" type="number">
+                                       </md-input-container>
+                                     </div>
+                                     <div ng-switch-when="F">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <input name="item.NomCampo" ng-model="item.ValCampo" type="number" disabled="disabled">
+                                       </md-input-container>
+                                     </div>
+                                     <div ng-switch-when="T">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <input name="item.NomCampo" ng-model="item.ValCampo" type="text">
+                                       </md-input-container>
+                                     </div>
+                                     <div ng-switch-when="D">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <md-datepicker name="item.NomCampo" ng-model="item.ValCampo"></md-datepicker>
+                                       </md-input-container>
+                                     </div>
+                                     <div ng-switch-when="C">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <md-select name="item.NomCampo" ng-model="item.ValCampo" ng-change="">
+                                             <md-option ng-repeat="colecao in item.Colecao" value="{{colecao.Value}}">
+                                                 {{colecao.Display}}
+                                             </md-option>
+                                         </md-select>
+                                       </md-input-container>
+                                     </div>
+                                     <div ng-switch-when="O">
+                                       <md-input-container class="md-block" flex-gt-xs>
+                                         <label>{{item.NomCampo}}</label>
+                                         <md-select name="item.NomCampo" ng-model="item.ValCampo" ng-change="">
+                                             <md-option ng-repeat="colecao in item.Colecao" value="{{colecao.Value}}">
+                                                 {{colecao.Display}}
+                                             </md-option>
+                                         </md-select>
+                                       </md-input-container>
+                                     </div>
+                              </div>
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-disabled="!ReviValida" ng-click="answer(Revisao)">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Completar Amostra -->
+
+<script type="text/ng-template" id="completarAmostra">
+    <md-dialog aria-label="CompletarAmostra">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Completar Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="numAmostra" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(numAmostra);">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Autorizar -->
+
+<script type="text/ng-template" id="autorizar">
+    <md-dialog aria-label="Autorizar">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Autorizar Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="numAmostra" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(numAmostra);">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Liberar -->
+
+<script type="text/ng-template" id="liberar">
+    <md-dialog aria-label="Liberar">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Liberar Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="numAmostra" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(numAmostra);">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Reativar -->
+
+<script type="text/ng-template" id="reativar">
+    <md-dialog aria-label="Reativar">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Reativar Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="numAmostra" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(numAmostra);">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Suspender -->
+
+<script type="text/ng-template" id="suspender">
+    <md-dialog aria-label="Suspender">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Suspender Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="numAmostra" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(numAmostra);">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Continuar -->
+
+<script type="text/ng-template" id="continuar">
+    <md-dialog aria-label="Continuar">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Continuar Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="numAmostra" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(numAmostra);">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Cancelar -->
+
+<script type="text/ng-template" id="cancelar">
+    <md-dialog aria-label="Cancelar">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Cancelar Amostra</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="numAmostra" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(numAmostra);">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Enviar Para Histórico -->
+
+<script type="text/ng-template" id="enviarHistorico">
+    <md-dialog aria-label="EnviarHistorico">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Enviar Para Histórico</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="numAmostra" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(numAmostra);">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Histórico de Inspeção -->
+
+<script type="text/ng-template" id="historicoInspecao">
+    <md-dialog aria-label="HistoricoInspeçao">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Histórico de Inspeção</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="numAmostra" ng-change="answer(numAmostra);" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Plano de Inspeção</label>
+                                <input ng-model="Plano" disabled="disabled">
+                            </md-input-container>
+                        </md-input-container>
+                        <div>
+                            <table ng-table="tableParams" class="table table-condensed table-bordered table-striped" wt-responsive-table fixed-header>
+                                <tr ng-repeat="row in $data" ng-click="setSelected(row);" ng-class="row == rowSelected ? 'selected':''">
+                                    <td title="'Versão'">{{row.NumVersao}}</td>
+                                    <td title="'Usuário'">{{row.CodUsuario}}</td>
+                                    <td title="'Situacão'">{{row.SitInspecao}}</td>
+                                    <td title="'Data'">{{row.DthInspecao}}</td>
+                                    <td title="'Observação'">{{row.ObsInspecao}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(numAmostra);">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<!-- Template Histórico de Revisão -->
+
+<script type="text/ng-template" id="historicoRevisao">
+    <md-dialog aria-label="HistoricoRevisão">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Histórico de Revisão</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/clear.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Amostras</label>
+                            <md-select ng-model="numAmostra" ng-change="answer(numAmostra);" required>
+                                <md-option ng-repeat="amostra in Amostras" value="{{amostra.NumAmostra}}">
+                                    {{amostra.NumAmostra}}
+                                </md-option>
+                            </md-select>
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Plano de Inspeção</label>
+                                <input ng-model="Plano" disabled="disabled">
+                            </md-input-container>
+                        </md-input-container>
+                        <div>
+                            <table ng-table="tableParams" class="table table-condensed table-bordered table-striped" wt-responsive-table fixed-header>
+                                <tr ng-repeat="row in $data" ng-click="setSelected(row);" ng-class="row == rowSelected ? 'selected':''">
+                                    <td title="'Versão'">{{row.NumVersao}}</td>
+                                    <td title="'Usuário'">{{row.CodUsuario}}</td>
+                                    <td title="'Situacão'">{{row.SitInspecao}}</td>
+                                    <td title="'Data'">{{row.DthInspecao}}</td>
+                                    <td title="'Observação'">{{row.ObsInspecao}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer(numAmostra);">
+                Confirmar
+            </md-button>
+            <md-button class="md-primary" ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>
+
+<div ng-controller="TableCtrl">
+    <table ng-table="tableParams" class="table table-condensed table-bordered table-striped" wt-responsive-table fixed-header>
+        <tr ng-repeat="row in $data" ng-click="setSelected(row);" ng-class="row == rowSelected ? 'selected':''">
+            <td title="'Nº Amostra'" filter="{NumAmostra: 'text'}" sortable="'NumAmostra'">{{row.NumAmostra}}</td>
+            <td title="'Cod. Amostra'" filter="{CodigoAmostra: 'text'}" sortable="'CodigoAmostra'">{{row.CodigoAmostra}}</td>
+            <td title="'Des. Situacão'" filter="{DesSituacao: 'text'}" sortable="'DesSituacao'">{{row.DesSituacao}}</td>
+            <td title="'Cod. Sintaxe'" filter="{CodSintaxe: 'text'}" sortable="'CodSintaxe'">{{row.CodSintaxe}}</td>
+            <td title="'Cod. Template'" filter="{CodTemplate: 'text'}" sortable="'CodTemplate'">{{row.CodTemplate}}</td>
+        </tr>
+    </table>
+</div>
